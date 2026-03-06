@@ -20,6 +20,23 @@
       --subtle:  #cbd5e1;
     }
 
+    /* ── Light theme overrides ── */
+    [data-theme="light"] {
+      --bg:      #f8fafc;
+      --surface: #f1f5f9;
+      --card:    #ffffff;
+      --border:  #cbd5e1;
+      --text:    #0f172a;
+      --muted:   #64748b;
+      --subtle:  #475569;
+    }
+    [data-theme="light"] .card {
+      box-shadow: 0 2px 12px rgba(0,0,0,.08);
+    }
+    [data-theme="light"] #nav {
+      box-shadow: 0 -1px 8px rgba(0,0,0,.06);
+    }
+
     * { margin:0; padding:0; box-sizing:border-box; }
 
     body {
@@ -758,6 +775,7 @@
   <button class="nav-btn" id="prevBtn" onclick="prevSlide()" disabled>← Назад</button>
   <span id="slide-info">1 / 11</span>
   <button class="nav-btn" id="nextBtn" onclick="nextSlide()">Вперёд →</button>
+  <button class="nav-btn" id="themeBtn" onclick="toggleTheme()" title="Переключить тему" style="min-width:2.5rem; font-size:1.1rem;">☀️</button>
 </div>
 
 <script>
@@ -798,6 +816,22 @@
   // Restore last position
   const saved = parseInt(localStorage.getItem('bukvarinsk-prez') || '0');
   if (saved > 0 && saved < total) go(saved);
+
+  // ── Theme switcher ──
+  function toggleTheme() {
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    const next = isLight ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    document.getElementById('themeBtn').textContent = next === 'light' ? '🌙' : '☀️';
+    localStorage.setItem('bukvarinsk-theme', next);
+  }
+
+  // Restore saved theme
+  const savedTheme = localStorage.getItem('bukvarinsk-theme') || 'dark';
+  if (savedTheme === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    document.getElementById('themeBtn').textContent = '🌙';
+  }
 </script>
 </body>
 </html>
